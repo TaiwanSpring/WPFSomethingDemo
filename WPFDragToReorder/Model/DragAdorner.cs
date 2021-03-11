@@ -19,9 +19,16 @@ namespace WPFDragToReorder.Model
 				borderPen.Freeze();
 			}
 		}
-
+		readonly AdornerLayer adornedLayer;
 		public DragAdorner(UIElement adornedElement, FrameworkElement frameworkElement, Point offset) : base(adornedElement)
 		{
+			this.adornedLayer = AdornerLayer.GetAdornerLayer(AdornedElement);
+
+			if (this.adornedLayer != null)
+			{
+				this.adornedLayer.Add(this);
+			}
+
 			this.frameworkElement = frameworkElement;
 
 			this.offset = offset;
@@ -29,8 +36,6 @@ namespace WPFDragToReorder.Model
 			this.visualBrush = new VisualBrush(frameworkElement);
 
 			this.visualBrush.Opacity = 0.7d;
-
-			AdornerLayer.GetAdornerLayer(AdornedElement).Add(this);
 
 			IsHitTestVisible = false;
 		}
@@ -52,7 +57,10 @@ namespace WPFDragToReorder.Model
 
 		public void Detath()
 		{
-			AdornerLayer.GetAdornerLayer(AdornedElement).Remove(this);
+			if (this.adornedLayer != null)
+			{
+				this.adornedLayer.Remove(this);
+			}
 		}
 	}
 }
