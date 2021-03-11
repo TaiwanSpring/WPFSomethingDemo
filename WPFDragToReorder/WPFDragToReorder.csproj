@@ -19,5 +19,7 @@
 	<ItemGroup>
 	  <Folder Include="Properties\" />
 	</ItemGroup>
-
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="IF NOT EXIST &quot;$(ProjectDir)..\bin\$(PlatformName)\$(ConfigurationName)\App&quot; (mkdir &quot;$(ProjectDir)..\bin\$(PlatformName)\$(ConfigurationName)\App&quot;)&#xD;&#xA;COPY /y &quot;$(TargetPath)&quot; &quot;$(ProjectDir)..\bin\$(PlatformName)\$(ConfigurationName)\App\$(TargetFileName)&quot;" />
+	</Target>
 </Project>

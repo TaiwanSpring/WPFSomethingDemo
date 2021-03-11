@@ -21,9 +21,15 @@ namespace WPFDragToReorder.Model
 		DirectionEnum direction;
 		public DropPositionEnum DropPosition { get; private set; }
 
+		readonly AdornerLayer adornedLayer;
 		public LineAdorner(UIElement adornedElement) : base(adornedElement)
 		{
-			AdornerLayer.GetAdornerLayer(AdornedElement).Add(this);
+			this.adornedLayer = AdornerLayer.GetAdornerLayer(AdornedElement);
+
+			if (this.adornedLayer != null)
+			{
+				this.adornedLayer.Add(this);
+			}
 
 			this.pen = new Pen(Brushes.Red, 1);
 
@@ -141,7 +147,10 @@ namespace WPFDragToReorder.Model
 
 		public void Detath()
 		{
-			AdornerLayer.GetAdornerLayer(AdornedElement).Remove(this);
+			if (this.adornedLayer != null)
+			{
+				this.adornedLayer.Remove(this);
+			}
 		}
 	}
 }

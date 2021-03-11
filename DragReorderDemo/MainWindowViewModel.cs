@@ -22,6 +22,13 @@ namespace ListItemDrag
 			get { return this.dropHandler; }
 			set { SetProperty(ref this.dropHandler, value); }
 		}
+		private object selectedItem;
+
+		public object SelectedItem
+		{
+			get { return this.selectedItem; }
+			set { SetProperty(ref this.selectedItem, value); }
+		}
 
 	}
 }

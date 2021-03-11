@@ -12,7 +12,7 @@
 		<local:MainWindowViewModel/>
 	</Window.DataContext>
 	<Grid x:Name="PART_Body">
-		<ItemsControl x:Name="PART_ListBox"
+		<ListBox SelectedItem="{Binding SelectedItem}"
 					  ui:ItemsControlSet.CanDrag="True"
 					  ui:ItemsControlSet.DragStatus="{Binding DragStatus, Mode=OneWayToSource}"
 					  ui:ItemsControlSet.DragHandler="{Binding DragHandler}"
@@ -26,6 +26,6 @@
 			<sys:String>6</sys:String>
 			<sys:String>7</sys:String>
 			<sys:String>8</sys:String>
-		</ItemsControl>
+		</ListBox>
 	</Grid>
 </Window>

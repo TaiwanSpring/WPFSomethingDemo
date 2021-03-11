@@ -97,20 +97,16 @@ namespace WPFDragToReorder.AttachedProperties
 							if (vector.X > dragBeginedOffset || vector.Y > dragBeginedOffset)
 							{
 								SetDragStatus(itemsControl, DragStatusEnum.Draging);
-
-								itemsControl.CaptureMouse();
-
-								Window window = Window.GetWindow(itemsControl);
-
-								if (window != null && window.Content is UIElement element
-									&& dragInfo.ItemContainer is FrameworkElement frameworkElement)
+								
+								if (dragInfo.ItemContainer is FrameworkElement frameworkElement)
 								{
+									frameworkElement.CaptureMouse();
 									if (dragAdorner != null)
 									{
 										dragAdorner.Detath();
 									}
 									Point offset = e.GetPosition(frameworkElement);
-									dragAdorner = new DragAdorner(element, frameworkElement, new Point() { X = -offset.X, Y = -offset.Y });
+									dragAdorner = new DragAdorner(itemsControl, frameworkElement, new Point() { X = -offset.X, Y = -offset.Y });
 								}
 							}
 						}
@@ -120,14 +116,9 @@ namespace WPFDragToReorder.AttachedProperties
 					{
 						if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
 						{
-
 							if (dragAdorner != null)
 							{
-								Window window = Window.GetWindow(itemsControl);
-								if (window != null)
-								{
-									dragAdorner.UpdatePoint(e.GetPosition(window));
-								}
+								dragAdorner.UpdatePoint(e.GetPosition(itemsControl));
 							}
 
 							if (GetItem(itemsControl.ItemContainerGenerator, itemsControl.InputHitTest(e.GetPosition(itemsControl)), out DependencyObject itemContainer, out object item))
@@ -138,9 +129,13 @@ namespace WPFDragToReorder.AttachedProperties
 									{
 										lineAdorner = new LineAdorner(itemsControl);
 										lineAdorner.UpdateBrush(GetDropTargetLineBrush(itemsControl), GetDropTargetLineThickness(itemsControl));
-									}
+										lineAdorner.UpdateTarget(e.MouseDevice, frameworkElement, GetItemPanelOrientation(itemsControl));
 
-									lineAdorner.UpdateTarget(e.MouseDevice, frameworkElement, GetItemPanelOrientation(itemsControl));
+									}
+									else
+									{
+										lineAdorner.UpdateTarget(e.MouseDevice, frameworkElement, GetItemPanelOrientation(itemsControl));
+									}
 								}
 							}
 							else
@@ -150,6 +145,8 @@ namespace WPFDragToReorder.AttachedProperties
 									lineAdorner.ClearTarget();
 								}
 							}
+
+							e.Handled = true;
 						}
 					}
 					break;
@@ -218,7 +215,13 @@ namespace WPFDragToReorder.AttachedProperties
 						lineAdorner = null;
 					}
 
-					itemsControl.ReleaseMouseCapture();
+
+					if (dragInfo.ItemContainer is FrameworkElement frameworkElement)
+					{
+						frameworkElement.ReleaseMouseCapture();
+					}
+
+					e.Handled = true;
 				}
 
 				dragInfo = default(DragInfo);

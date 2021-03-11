@@ -24,12 +24,5 @@ namespace ListItemDrag
 		{
 			InitializeComponent();
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			PART_ListBox.Items.Clear();
-			PART_ListBox.Visibility = Visibility.Collapsed;
-			PART_Body.Children.Clear();
-		}
 	}
 }
