@@ -1,4 +1,4 @@
 # WPFSomethingDemo solution information 
 
-## DragReorderDemo
-Simple ListBox drag to reorder.
+## 1. DragReorderDemo 
+* Simple ListBox drag to reorder.
